@@ -2,6 +2,7 @@
 
 import tensorflow_datasets as tfds
 import tensorflow as tf
+import os
 
 import matplotlib.pyplot as plt
 
@@ -53,9 +54,7 @@ model.compile(loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               optimizer=tf.keras.optimizers.Adam(1e-4),
               metrics=['accuracy'])
 
-history = model.fit(train_dataset, epochs=10,
-                    validation_data=test_dataset, 
-                    validation_steps=30)
+model.load_weights('./checkpoints/my_checkpoint')
 
 test_loss, test_acc = model.evaluate(test_dataset)
 
@@ -91,6 +90,4 @@ sample_pred_text = ('The movie was cool. The animation and the graphics '
 predictions = sample_predict(sample_pred_text, pad=True)
 print(predictions)
 
-plot_graphs(history, 'accuracy')
-
-plot_graphs(history, 'loss')
+model.save_weights('./checkpoints/my_checkpoint')
